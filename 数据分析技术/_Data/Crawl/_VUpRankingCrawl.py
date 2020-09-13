@@ -12,7 +12,7 @@ import re
 today=datetime.date.today()
 formatted_today=today.strftime('%Y%m%d')
 fileName = "[" + formatted_today + "] vup_ranking_crawl_result.csv"
-fileHead = ["順位","ネーム", "ルームナンバー","info","登録者数"]
+fileHead = ["順位","ネーム", "アイコン", "ルームナンバー","info","登録者数"]
 #%%
 driver = webdriver.Chrome()                #用chrome浏览器打开
 
@@ -41,11 +41,11 @@ def create_csv():
     with open(fileName,'w', newline='', encoding='utf-8-sig') as f:
         csv_write = csv.writer(f)
         csv_write.writerow(fileHead)
-def write_csv( rank, name, roomNumber, chanName, fansCount):
+def write_csv( rank, name, icon, roomNumber, chanName, fansCount):
     '''逐行写入内容'''
     with open(fileName, 'a+', newline='', encoding='utf-8-sig') as f:
         csv_write = csv.writer(f)
-        data_row = [rank, name, roomNumber, chanName, fansCount]
+        data_row = [rank, name, icon, roomNumber, chanName, fansCount]
         csv_write.writerow(data_row)
 def print_log_info(log):
     '''输出log'''
@@ -72,7 +72,7 @@ def execute():
         fansInfo = _fansColumn.findAll(name="div", attrs={"class":"column is-7"})
         fansCount = fansInfo[0].text.strip() # 粉丝数
         #fansChangeCount = fansInfo[1].text.strip() # 粉丝变化数
-        write_csv(rank, upName, liveNO, intro, fansCount)
+        write_csv(rank, upName, _icon, liveNO, intro, fansCount)
         print_log_info("正在写入 "+str(rank)+"位: "+upName)
         rank += 1
 # %%
